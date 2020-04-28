@@ -8,7 +8,7 @@
    
     public class SeedDB
     {
-        //INYECCION
+        //INYECCION DE LA  BASE DE DATOS
         private readonly DataContext _context;
         private Random _random;
 
