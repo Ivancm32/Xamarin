@@ -1,5 +1,5 @@
 namespace Shop.Web //cambiamos toda la clase para personalizarla para que llame al alimentador de base de datos(SeedDB)
-    // ademas le establecemos que va a ir dirigido a un webhost
+                   // ademas le establecemos que va a ir dirigido a un webhost
 {
     using Data;
     using Microsoft.AspNetCore;
@@ -25,9 +25,11 @@ namespace Shop.Web //cambiamos toda la clase para personalizarla para que llame 
             }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
+.UseStartup<Startup>();
+        }
     }
 }
 

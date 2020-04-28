@@ -2,9 +2,8 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Shop.Web.Data.Entities;
-    using Microsoft.EntityFrameworkCore.Design;
     public class DataContext : DbContext // El Context funciona para realizar inyeccion de base de datos cada vez que se llama desde
-        //otra clase
+                                         //otra clase
     {
         /*
         pasos que tuve que hacer para que funcionara
@@ -24,7 +23,7 @@
         // prop
         //ctor
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-       
+
         {
 
         }

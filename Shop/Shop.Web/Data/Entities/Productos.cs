@@ -8,7 +8,7 @@
     {
         public int Id { get; set; }
 
-        [MaxLength(50,ErrorMessage = "El campo {0} debe ser menos de {1} caracteres ")]
+        [MaxLength(50, ErrorMessage = "El campo {0} debe ser menos de {1} caracteres ")]
         [Required]
         public string Nombre { get; set; }
 
@@ -21,7 +21,7 @@
         //desaparezca el formato anterior 
         public double Precio { get; set; }
 
-     
+
         [Display(Name = "Imagen")]
         // El display solamente nos muestra una etiqueta
         public string ImageUrl { get; set; }
@@ -40,7 +40,7 @@
 
         [Column(TypeName = "decimal(18,2)")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
-       //  el N2 es el formato Numerico  por defecto que tenga nuestra maquina
+        //  el N2 es el formato Numerico  por defecto que tenga nuestra maquina
         //  incluye separacion de miles y 2 decimales
         // el ApplyFormatInEditMode lo que hace es que a la hora de modifar el valor nos
         //desaparezca el formato anterior 

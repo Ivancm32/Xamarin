@@ -2,15 +2,14 @@
 {
     using Shop.Web.Data.Entities;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-   
+
     public class SeedDB
     {
         //INYECCION DE LA  BASE DE DATOS
         private readonly DataContext _context;
-        private Random _random;
+        private readonly Random _random;
 
         public SeedDB(DataContext context)
         {
@@ -36,7 +35,7 @@
             _context.productos.Add(new Productos
             {
                 Nombre = name,
-                Precio = this._random.Next(200000,600000),
+                Precio = this._random.Next(200000, 600000),
                 Disponi = true,
                 Stock = this._random.Next(100)
             });
