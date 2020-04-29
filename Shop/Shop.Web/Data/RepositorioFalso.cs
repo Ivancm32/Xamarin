@@ -1,11 +1,9 @@
-﻿using Shop.Web.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Shop.Web.Data
+﻿namespace Shop.Web.Data
 {
+    using Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     public class RepositorioFalso : IRepositorio
     {
         public void AddProduct(Productos productos)
@@ -20,12 +18,14 @@ namespace Shop.Web.Data
 
         public IEnumerable<Productos> GetProducts()
         {
-            var productos = new List<Productos>();
-            productos.Add(new Productos { Id = 1, Nombre = "Uno", Precio = 10 });
-            productos.Add(new Productos { Id = 2, Nombre = "Dos", Precio = 20 });
-            productos.Add(new Productos { Id = 3, Nombre = "Tres", Precio = 30 });
-            productos.Add(new Productos { Id = 4, Nombre = "Cuatro", Precio = 40 });
-            productos.Add(new Productos { Id = 5, Nombre = "Cinco", Precio = 50 });
+            var productos = new List<Productos>
+            {
+                new Productos { Id = 1, Nombre = "Uno", Precio = 10 },
+                new Productos { Id = 2, Nombre = "Dos", Precio = 20 },
+                new Productos { Id = 3, Nombre = "Tres", Precio = 30 },
+                new Productos { Id = 4, Nombre = "Cuatro", Precio = 40 },
+                new Productos { Id = 5, Nombre = "Cinco", Precio = 50 }
+            };
             return productos;
         }
 

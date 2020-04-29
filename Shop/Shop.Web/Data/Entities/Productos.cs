@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Productos
+    public class Productos : IEntity
     {
         public int Id { get; set; }
 
@@ -46,5 +46,6 @@
         //desaparezca el formato anterior 
         public double Stock { get; set; }
 
+        public Usuarios Usuarios { get; set; } // Se crea la relacion uno a varios con la clase Usuarios
     }
 }

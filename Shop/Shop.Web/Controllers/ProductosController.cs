@@ -1,36 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Shop.Web.Data;
-using Shop.Web.Data.Entities;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Shop.Web.Controllers
+﻿namespace Shop.Web.Controllers
 {
+    using Data;
+    using Data.Entities;
+    using Helper;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System.Threading.Tasks;
     public class ProductosController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IRepositorioProductos repositorioProductos;
 
-        private readonly IRepositorio repository;
+        //private readonly DataContext _context;
 
-        public ProductosController(IRepositorio repository)
+
+        private readonly IUserHelper userHelper;
+
+        public ProductosController(IRepositorioProductos RepositorioProductos, IUserHelper userHelper)
         {
-            this.repository = repository;
+            repositorioProductos = RepositorioProductos;
+            this.userHelper = userHelper;
         }
 
         public IActionResult Index()
         {
-            return View(this.repository.GetProducts());
+            return View(this.repositorioProductos.GetAll());
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = this.repository.GetProduct(id.Value);
+            var product = await this.repositorioProductos.GetByIdAsync(id.Value);
             if (product == null)
             {
                 return NotFound();
@@ -50,21 +53,22 @@ namespace Shop.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.repository.AddProduct(productos);
-                await this.repository.SaveAllAsync();
+                //TODO: Cambiar cuando se cree el login dato quemado
+                productos.Usuarios = await this.userHelper.GetUserByEmailAsync("Icastro@tas-seguridad.com");
+                await this.repositorioProductos.CreateAsync(productos);
                 return RedirectToAction(nameof(Index));
             }
             return View(productos);
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = this.repository.GetProduct(id.Value);
+            var product = await this.repositorioProductos.GetByIdAsync(id.Value);
             if (product == null)
             {
                 return NotFound();
@@ -81,12 +85,12 @@ namespace Shop.Web.Controllers
             {
                 try
                 {
-                    this.repository.UpdateProduct(productos);
-                    await this.repository.SaveAllAsync();
+                    productos.Usuarios = await this.userHelper.GetUserByEmailAsync("Icastro@tas-seguridad.com");
+                    await this.repositorioProductos.UpdateAsync(productos);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!this.repository.ProductExists(productos.Id))
+                    if (!await this.repositorioProductos.ExistAsync(productos.Id))
                     {
                         return NotFound();
                     }
@@ -100,14 +104,14 @@ namespace Shop.Web.Controllers
             return View(productos);
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = this.repository.GetProduct(id.Value);
+            var product = await this.repositorioProductos.GetByIdAsync(id.Value);
             if (product == null)
             {
                 return NotFound();
@@ -120,9 +124,8 @@ namespace Shop.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = this.repository.GetProduct(id);
-            this.repository.RemoveProduct(product);
-            await this.repository.SaveAllAsync();
+            var product = await this.repositorioProductos.GetByIdAsync(id);
+            await this.repositorioProductos.DeleteAsync(product);
             return RedirectToAction(nameof(Index));
         }
     }

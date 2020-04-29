@@ -1,9 +1,15 @@
 ﻿namespace Shop.Web.Data
 {
+    using Entities;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    using Shop.Web.Data.Entities;
-    public class DataContext : DbContext // El Context funciona para realizar inyeccion de base de datos cada vez que se llama desde
-                                         //otra clase
+
+    public class DataContext : IdentityDbContext<Usuarios> // Este modelo ya viene actualizado con todas las entidades de usuario y la
+                                                           //seguridad integrada de .netcore ypodemod pasar un modelo especifico
+
+
+    //public class DataContext : DbContext // El DbContext funciona para realizar inyeccion de base de datos cada vez que se llama desde
+    //otra clase es el modelo tradicional
     {
         /*
         pasos que tuve que hacer para que funcionara
@@ -18,8 +24,11 @@
 8.para borrar migraciones usar dotnet ef migrations remove
 9.agregar nueva migracion add-migration ModifyProducts desde administracion paquete nuguet console
 10.usar Remove-Migration para borrar migracion desde administracion paquete nuguet console
-*/
+11.Ejecutar comando "dotnet ef database drop" desde la ruta de Shop.Web borra la base de datos
+12.agregar nueva migracion add-migration Users desde administracion paquete nuguet console o dotnet ef migrations add Users desde consola
+13.dotnet ef migrations remove  borra la ultima migracion ejecutada */
         public DbSet<Productos> productos { get; set; }
+        public DbSet<Pais> paises { get; set; }
         // prop
         //ctor
         public DataContext(DbContextOptions<DataContext> options) : base(options)

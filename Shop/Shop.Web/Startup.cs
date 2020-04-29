@@ -1,14 +1,16 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Shop.Web.Data;
-
 namespace Shop.Web
 {
+    using Data;
+    using Data.Entities;
+    using Helper;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -21,6 +23,18 @@ namespace Shop.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<Usuarios, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+                cfg.Password.RequireDigit = false;
+                cfg.Password.RequiredUniqueChars = 0;
+                cfg.Password.RequireLowercase = false;
+                cfg.Password.RequireNonAlphanumeric = false;
+                cfg.Password.RequireUppercase = false;
+                cfg.Password.RequiredLength = 6;//minimo de caracteres
+            })
+        .AddEntityFrameworkStores<DataContext>();
+
 
             services.AddDbContext<DataContext>(cfg =>
             {
@@ -30,8 +44,10 @@ namespace Shop.Web
             });
 
             services.AddTransient<SeedDB>(); // Realiza la alimentacion de la base de datos
-
-            services.AddScoped<IRepositorio, Repositorio>();
+            //services.AddScoped<IRepositorio, Repositorio>();
+            services.AddScoped<IRepositorioProductos, RepositorioProductos>();
+            services.AddScoped<IRepositorioPais, RepositorioPais>();
+            services.AddScoped<IUserHelper, UserHelper>();
 
 
 
@@ -65,6 +81,7 @@ namespace Shop.Web
 
             app.UseAuthorization();
 
+            app.UseCookiePolicy();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

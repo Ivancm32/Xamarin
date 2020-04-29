@@ -1,9 +1,8 @@
-﻿using Shop.Web.Data.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Shop.Web.Data
+﻿namespace Shop.Web.Data
 {
+    using Entities;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     public interface IRepositorio
     {
         void AddProduct(Productos productos);
