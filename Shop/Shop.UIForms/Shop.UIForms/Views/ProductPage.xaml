@@ -13,10 +13,48 @@
             Padding="8">
             <!--HasUnevenRows = Las filas van a tener diferentes tamaños-->
             <ListView
-                HasUnevenRows="True" 
-                ItemsSource="{Binding Product}">
-
+            	IsPullToRefreshEnabled="True"
+                IsRefreshing="{Binding IsRefreshing}"
+                HasUnevenRows="True"
+                ItemsSource="{Binding Product}"
+                RefreshCommand="{Binding RefreshCommand}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                	Grid.Column="0"
+                                	Source="{Binding ImageFullPath}"
+                                	WidthRequest="100">
+                                </Image>
+                                <StackLayout
+                                	Grid.Column="1"
+                                	VerticalOptions="Center">
+                                    <Label
+                                    	FontAttributes="Bold"
+                                    	FontSize="Medium"
+                                    	Text="{Binding Nombre}"
+                                    	TextColor="Black">
+                                    </Label>
+                                    <Label
+                                    	Text="{Binding Precio, StringFormat='Precio : {0:C2}'}"
+                                    	TextColor="Navy">
+                                    </Label>
+                                    <Label
+                                    	Text="{Binding Stock, StringFormat='Stock : {0:N2}'}"
+                                    	TextColor="Black">
+                                    </Label>
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
