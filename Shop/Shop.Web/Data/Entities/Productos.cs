@@ -47,5 +47,23 @@
         public double Stock { get; set; }
 
         public Usuarios Usuarios { get; set; } // Se crea la relacion uno a varios con la clase Usuarios
+
+        public string ImageFullPath
+        {
+
+            get
+            {
+                if (string.IsNullOrEmpty(this.ImageUrl)) {
+                    return null;
+                }
+
+                return $"http://186.159.159.78:82/Xamarin{this.ImageUrl.Substring(1)}";
+            }
+
+        }
+
+               // ; set; } // Se crea la relacion uno a varios con la clase Usuarios
+
+
     }
 }

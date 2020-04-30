@@ -1,16 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Shop.Web.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Shop.Web.Controllers.API
+﻿namespace Shop.Web.Controllers.API
 {
+    using Microsoft.AspNetCore.Mvc;
+    using Shop.Web.Data;
+
     [Route("api/[Controller]")]
     public class ProductosController : Controller
     {
-        private readonly IRepositorioProductos  repositorioProductos;
+        private readonly IRepositorioProductos repositorioProductos;
 
         public ProductosController(IRepositorioProductos repositorioProductos)
         {
@@ -20,7 +16,7 @@ namespace Shop.Web.Controllers.API
         [HttpGet]
         public IActionResult GetProductos()
         {
-            return this.Ok(this.repositorioProductos.GetAll());
+            return this.Ok(this.repositorioProductos.GetAllWithUsers());
         }
     }
 
