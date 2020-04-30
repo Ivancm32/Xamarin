@@ -1,3 +1,3 @@
-using Xamarin.Forms.Xaml;
+using Xamarin.UIForms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]

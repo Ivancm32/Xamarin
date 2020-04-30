@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Shop.Web.Models;
+    using System;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -60,15 +61,20 @@
 
                 if (view.ImageFile != null && view.ImageFile.Length > 0)
                 {
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+
+                    var nombre = view.ImageFile.FileName.Substring(0, view.ImageFile.FileName.Length - 4);
+
                     path = Path.Combine(Directory.GetCurrentDirectory(),
-                    "wwwroot\\images\\Productos", view.ImageFile.FileName);
+                       "wwwroot\\images\\Productos", nombre + "-" + file);
 
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await view.ImageFile.CopyToAsync(stream);
                     }
 
-                    path = $"~/images/Productos/{view.ImageFile.FileName}";
+                    path = $"~/images/Productos/{nombre + "-" + file}";
                 }
                 var product = this.toProduct(view, path);
                 //TODO: Cambiar cuando se cree el login dato quemado
@@ -137,19 +143,23 @@
             {
                 try
                 {
-                    var path = view.ImageUrl;
+                    var path = string.Empty;
 
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {
+                        var guid = Guid.NewGuid().ToString();
+                        var file = $"{guid}.jpg";
+                        var nombre = view.ImageFile.FileName.Substring(0, view.ImageFile.FileName.Length - 4);
+
                         path = Path.Combine(Directory.GetCurrentDirectory(),
-                        "wwwroot\\images\\Productos", view.ImageFile.FileName);
+                        "wwwroot\\images\\Productos", nombre + "-" + file);
 
                         using (var stream = new FileStream(path, FileMode.Create))
                         {
                             await view.ImageFile.CopyToAsync(stream);
                         }
 
-                        path = $"~/images/Productos/{view.ImageFile.FileName}";
+                        path = $"~/images/Productos/{nombre + "-" + file}";
                     }
                     var product = this.toProduct(view, path);
                     product.Usuarios = await this.userHelper.GetUserByEmailAsync("Icastro@tas-seguridad.com");

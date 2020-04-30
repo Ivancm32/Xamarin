@@ -53,7 +53,8 @@
 
             get
             {
-                if (string.IsNullOrEmpty(this.ImageUrl)) {
+                if (string.IsNullOrEmpty(this.ImageUrl))
+                {
                     return null;
                 }
 
@@ -62,7 +63,7 @@
 
         }
 
-               // ; set; } // Se crea la relacion uno a varios con la clase Usuarios
+        // ; set; } // Se crea la relacion uno a varios con la clase Usuarios
 
 
     }
