@@ -2,14 +2,18 @@
 {
 	using Data.Entities;
 	using Microsoft.AspNetCore.Identity;
+	using Shop.Web.Models;
 	using System.Threading.Tasks;
 
 	public class UserHelper : IUserHelper
 	{
+		private readonly SignInManager<Usuarios> signInManager;
 		private readonly UserManager<Usuarios> userManager;
 
-		public UserHelper(UserManager<Usuarios> userManager)
+		public UserHelper(SignInManager<Usuarios> signInManager,
+			UserManager<Usuarios> userManager)
 		{
+			this.signInManager = signInManager;
 			this.userManager = userManager;
 		}
 
@@ -22,6 +26,21 @@
 		{
 			var user = await this.userManager.FindByEmailAsync(email);
 			return user;
+		}
+
+		public async Task<SignInResult> LoginAsync(LoginViewModel model)
+		{
+			return await this.signInManager.PasswordSignInAsync(
+		model.Username,
+		model.Password,
+		model.RememberMe,
+		false);
+
+		}
+
+		public async Task LogoutAsync()
+		{
+			await this.signInManager.SignOutAsync();
 		}
 	}
 }
