@@ -7,14 +7,14 @@
 
 	public class UserHelper : IUserHelper
 	{
-		private readonly SignInManager<Usuarios> signInManager;
 		private readonly UserManager<Usuarios> userManager;
+		private readonly SignInManager<Usuarios> signInManager;
 
-		public UserHelper(SignInManager<Usuarios> signInManager,
-			UserManager<Usuarios> userManager)
+		public UserHelper(UserManager<Usuarios> UserManager,
+			SignInManager<Usuarios> SignInManager)
 		{
-			this.signInManager = signInManager;
-			this.userManager = userManager;
+			userManager = UserManager;
+			signInManager = SignInManager;
 		}
 
 		public async Task<IdentityResult> AddUserAsync(Usuarios user, string password)

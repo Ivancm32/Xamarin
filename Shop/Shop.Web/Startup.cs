@@ -45,18 +45,11 @@ namespace Shop.Web
 
             services.AddTransient<SeedDB>(); // Realiza la alimentacion de la base de datos
             //services.AddScoped<IRepositorio, Repositorio>();
-            services.AddScoped<IRepositorioProductos, RepositorioProductos>();
+          services.AddScoped<IRepositorioProductos, RepositorioProductos>();
             services.AddScoped<IRepositorioPais, RepositorioPais>();
             services.AddScoped<IUserHelper, UserHelper>();
 
 
-
-
-            services.Configure<CookiePolicyOptions>(options =>
-{
-    options.CheckConsentNeeded = context => true;
-    options.MinimumSameSitePolicy = SameSiteMode.None;
-});
 
             services.AddControllersWithViews();
         }

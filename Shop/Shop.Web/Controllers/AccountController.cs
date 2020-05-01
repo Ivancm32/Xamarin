@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Web.Helper;
 using Shop.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Shop.Web.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Shop.Web.Controllers
 {
+    
     public class AccountController : Controller
-
-
     {
         private readonly IUserHelper userHelper;
 
@@ -18,6 +21,7 @@ namespace Shop.Web.Controllers
         {
             this.userHelper = userHelper;
         }
+
         public IActionResult Login()
         {
             if (this.User.Identity.IsAuthenticated)
@@ -55,5 +59,4 @@ namespace Shop.Web.Controllers
             return this.RedirectToAction("Index", "Home");
         }
     }
-
 }
