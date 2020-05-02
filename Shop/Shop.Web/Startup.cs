@@ -1,16 +1,16 @@
 namespace Shop.Web
 {
-    using Data;
-    using Data.Entities;
-    using Helper;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Data;
+    using Data.Entities;
+    using Helper;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -33,7 +33,7 @@ namespace Shop.Web
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequiredLength = 6;//minimo de caracteres
             })
-        .AddEntityFrameworkStores<DataContext>();
+       .AddEntityFrameworkStores<DataContext>();
 
 
             services.AddDbContext<DataContext>(cfg =>
@@ -44,14 +44,21 @@ namespace Shop.Web
             });
 
             services.AddTransient<SeedDB>(); // Realiza la alimentacion de la base de datos
-            //services.AddScoped<IRepositorio, Repositorio>();
-          services.AddScoped<IRepositorioProductos, RepositorioProductos>();
+                                             //services.AddScoped<IRepositorio, Repositorio>();
+            services.AddScoped<IRepositorioProductos, RepositorioProductos>();
             services.AddScoped<IRepositorioPais, RepositorioPais>();
             services.AddScoped<IUserHelper, UserHelper>();
 
 
 
+
+            //services.AddDbContext<DataContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDefaultIdentity<IdentityUser>()
+            //    .AddEntityFrameworkStores<DataContext>();
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +67,7 @@ namespace Shop.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -72,14 +80,15 @@ namespace Shop.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCookiePolicy();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
