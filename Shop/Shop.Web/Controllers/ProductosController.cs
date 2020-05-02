@@ -80,8 +80,7 @@
                     path = $"~/images/Productos/{nombre + "-" + file}";
                 }
                 var product = this.toProduct(view, path);
-                //TODO: Cambiar cuando se cree el login dato quemado
-                product.Usuarios = await this.userHelper.GetUserByEmailAsync("Icastro@tas-seguridad.com");
+                product.Usuarios = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 await this.repositorioProductos.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
@@ -165,7 +164,7 @@
                         path = $"~/images/Productos/{nombre + "-" + file}";
                     }
                     var product = this.toProduct(view, path);
-                    product.Usuarios = await this.userHelper.GetUserByEmailAsync("Icastro@tas-seguridad.com");
+                    product.Usuarios = await this.userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     await this.repositorioProductos.UpdateAsync(product);
                 }
                 catch (DbUpdateConcurrencyException)

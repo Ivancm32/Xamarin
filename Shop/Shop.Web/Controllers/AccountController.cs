@@ -1,18 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Web.Helper;
-using Shop.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Shop.Web.Data.Entities;
-using Microsoft.AspNetCore.Authorization;
-
-namespace Shop.Web.Controllers
+﻿namespace Shop.Web.Controllers
 {
-    
+    using Data.Entities;
+    using Helper;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class AccountController : Controller
     {
         private readonly IUserHelper userHelper;
@@ -58,5 +53,61 @@ namespace Shop.Web.Controllers
             await this.userHelper.LogoutAsync();
             return this.RedirectToAction("Index", "Home");
         }
+
+        public IActionResult Register()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterNewUserViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var user = await this.userHelper.GetUserByEmailAsync(model.Username);
+                if (user == null)
+                {
+                    user = new Usuarios
+                    {
+                        Nombre = model.FirstName,
+                        PrimerApellido = model.PApellido,
+                        SegundoApellido = model.SApellido,
+                        Email = model.Username,
+                        PhoneNumber = model.PhoneNumber,
+                        UserName = model.Username
+                    };
+
+                    var result = await this.userHelper.AddUserAsync(user, model.Password);
+                    if (result != IdentityResult.Success)
+                    {
+                        this.ModelState.AddModelError(string.Empty, "El Usuario no ha podido ser creado.");
+                        return this.View(model);
+                    }
+
+
+                    var loginViewModel = new LoginViewModel
+                    {
+                        Password = model.Password,
+                        RememberMe = false,
+                        Username = model.Username
+                    };
+
+                    var result2 = await this.userHelper.LoginAsync(loginViewModel);
+
+                    if (result2.Succeeded)
+                    {
+                        return this.RedirectToAction("Index", "Home");
+                    }
+
+                    this.ModelState.AddModelError(string.Empty, "El Usuario no ha podido loguearse.");
+                    return this.View(model);
+                }
+
+                this.ModelState.AddModelError(string.Empty, "El Username ya esta Registrado.");
+            }
+
+            return this.View(model);
+        }
+
     }
 }
