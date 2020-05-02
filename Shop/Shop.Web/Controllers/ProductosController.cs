@@ -11,6 +11,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+
     [Authorize]
     public class ProductosController : Controller
     {
@@ -145,7 +146,7 @@
             {
                 try
                 {
-                    var path = string.Empty;
+                    var path = view.ImageUrl;
 
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {

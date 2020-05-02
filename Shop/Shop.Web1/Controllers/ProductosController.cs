@@ -12,6 +12,7 @@
     using System.Linq;
     using System.Threading.Tasks;
    
+    [Authorize]
     public class ProductosController : Controller
     {
         private readonly IRepositorioProductos repositorioProductos;
@@ -145,7 +146,7 @@
             {
                 try
                 {
-                    var path = string.Empty;
+                    var path = view.ImageUrl;
 
                     if (view.ImageFile != null && view.ImageFile.Length > 0)
                     {
@@ -182,6 +183,7 @@
             }
             return View(view);
         }
+
 
         public async Task<IActionResult> Delete(int? id)
         {
