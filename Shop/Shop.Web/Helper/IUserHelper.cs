@@ -14,5 +14,12 @@
 
 		Task LogoutAsync();
 
+		Task<IdentityResult> UpdateUserAsync(Usuarios user);
+
+		Task<IdentityResult> ChangePasswordAsync(Usuarios user, string oldPassword, string newPassword);
+
+		Task<SignInResult> ValidatePasswordAsync(Usuarios user, string password);
+
+
 	}
 }

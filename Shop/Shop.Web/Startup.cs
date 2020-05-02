@@ -10,6 +10,10 @@ namespace Shop.Web
     using Data;
     using Data.Entities;
     using Helper;
+    using AspNet.Security.OAuth.Validation;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
 
     public class Startup
     {
@@ -48,6 +52,20 @@ namespace Shop.Web
             services.AddScoped<IRepositorioProductos, RepositorioProductos>();
             services.AddScoped<IRepositorioPais, RepositorioPais>();
             services.AddScoped<IUserHelper, UserHelper>();
+            //        services.AddAuthentication(OAuthValidationDefaults.AuthenticationScheme)
+            //.AddOAuthValidation();
+
+            services.AddAuthentication()
+    .AddCookie()
+    .AddJwtBearer(cfg =>
+    {
+        cfg.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = this.Configuration["Tokens:Issuer"],
+            ValidAudience = this.Configuration["Tokens:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+        };
+    });
 
 
 

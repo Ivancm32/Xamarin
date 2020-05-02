@@ -42,5 +42,25 @@
 		{
 			await this.signInManager.SignOutAsync();
 		}
+
+		public async Task<IdentityResult> UpdateUserAsync(Usuarios user)
+		{
+			return await this.userManager.UpdateAsync(user);
+		}
+
+		public async Task<IdentityResult> ChangePasswordAsync(Usuarios user, string oldPassword, string newPassword)
+		{
+			return await this.userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+		}
+
+		public async Task<SignInResult> ValidatePasswordAsync(Usuarios user, string password)
+		{
+			return await this.signInManager.CheckPasswordSignInAsync(
+				user,
+				password,
+				false);
+		}
+
+
 	}
 }
