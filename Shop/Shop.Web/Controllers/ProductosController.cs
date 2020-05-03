@@ -12,7 +12,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-   
+
     public class ProductosController : Controller
     {
         private readonly IRepositorioProductos repositorioProductos;
@@ -28,7 +28,7 @@
             this.userHelper = userHelper;
         }
 
-       
+
         public IActionResult Index()
         {
             return View(this.repositorioProductos.GetAll().OrderBy(p => p.Nombre));

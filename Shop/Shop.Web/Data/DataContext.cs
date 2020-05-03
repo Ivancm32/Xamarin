@@ -30,6 +30,13 @@
 13.dotnet ef migrations remove  borra la ultima migracion ejecutada */
         public DbSet<Productos> productos { get; set; }
         public DbSet<Pais> paises { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<OrderDetailTemp> OrderDetailTemps { get; set; }
+
         // prop
         //ctor
         public DataContext(DbContextOptions<DataContext> options) : base(options)

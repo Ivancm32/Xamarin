@@ -15,6 +15,8 @@ namespace Shop.Web
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
     using Microsoft.AspNetCore.Http;
+    using Shop.Web.Data.Interfaces;
+    using Shop.Web.Data.Repositorios;
 
     public class Startup
     {
@@ -52,6 +54,7 @@ namespace Shop.Web
                                              //services.AddScoped<IRepositorio, Repositorio>();
             services.AddScoped<IRepositorioProductos, RepositorioProductos>();
             services.AddScoped<IRepositorioPais, RepositorioPais>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IUserHelper, UserHelper>();
             //        services.AddAuthentication(OAuthValidationDefaults.AuthenticationScheme)
             //.AddOAuthValidation();
