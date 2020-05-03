@@ -9,12 +9,15 @@
 	{
 		private readonly UserManager<Usuarios> userManager;
 		private readonly SignInManager<Usuarios> signInManager;
+		private readonly RoleManager<IdentityRole> roleManager;
 
 		public UserHelper(UserManager<Usuarios> UserManager,
-			SignInManager<Usuarios> SignInManager)
+			SignInManager<Usuarios> SignInManager,
+	RoleManager<IdentityRole> roleManager)
 		{
 			userManager = UserManager;
 			signInManager = SignInManager;
+			this.roleManager = roleManager;
 		}
 
 		public async Task<IdentityResult> AddUserAsync(Usuarios user, string password)
@@ -61,6 +64,27 @@
 				false);
 		}
 
+		public async Task CheckRoleAsync(string roleName)
+		{
+			var roleExists = await this.roleManager.RoleExistsAsync(roleName);
+			if (!roleExists)
+			{
+				await this.roleManager.CreateAsync(new IdentityRole
+				{
+					Name = roleName
+				});
+			}
+		}
+
+		public async Task AddUserToRoleAsync(Usuarios user, string roleName)
+		{
+			await this.userManager.AddToRoleAsync(user, roleName);
+		}
+
+		public async Task<bool> IsUserInRoleAsync(Usuarios user, string roleName)
+		{
+			return await this.userManager.IsInRoleAsync(user, roleName);
+		}
 
 	}
 }

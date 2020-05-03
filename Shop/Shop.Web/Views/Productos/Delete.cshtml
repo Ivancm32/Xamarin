@@ -61,7 +61,8 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-outline-success btn-lg">Regresar a Lista</a>
+        <button type="submit" class="btn btn-danger"><i class="fa fa-thash"></i> Eliminar</button>
+        |
+        <a asp-action="Index" class="btn btn-outline-success btn-lg"><i class="fa fa-chevron-left"></i>Regresar a Lista</a>
     </form>
 </div>

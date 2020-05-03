@@ -27,6 +27,9 @@
 
         public async Task SeedAsync()
         {
+            await this.userHelper.CheckRoleAsync("Admin");
+            await this.userHelper.CheckRoleAsync("Customer");
+
             await _context.Database.EnsureCreatedAsync();
 
             // var usuarios = await this.userManager.FindByEmailAsync("Icastro@tas-seguridad.com");
@@ -49,7 +52,16 @@
                 {
                     throw new InvalidOperationException("No se puede crear el usuario en el SeedDB");
                 }
+
+                await this.userHelper.AddUserToRoleAsync(usuarios, "Admin");
             }
+
+            var isInRole = await this.userHelper.IsUserInRoleAsync(usuarios, "Admin");
+            if (!isInRole)
+            {
+                await this.userHelper.AddUserToRoleAsync(usuarios, "Admin");
+            }
+
 
 
             if (!_context.productos.Any())//Si no hay algun producto ingresa estos
